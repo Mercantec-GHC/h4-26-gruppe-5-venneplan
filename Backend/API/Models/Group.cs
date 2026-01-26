@@ -1,8 +1,7 @@
 ﻿namespace API.Models
 {
-    public class Group
+    public class Group : Common
     {
-        public int Id { get; set; }
         public required string Name { get; set; }
 
         public List<GroupMember>? GroupMembers { get; set; }
