@@ -12,5 +12,7 @@ namespace API.DBContext
         public DbSet<Models.Friend> Friends { get; set; }
         public DbSet<Models.Group> Groups { get; set; }
         public DbSet<Models.GroupMember> GroupMembers { get; set; }
+        public DbSet<Models.Event> Events { get; set; }
+        public DbSet<Models.EventParticipant> EventParticipants { get; set; }
     }
 }

@@ -13,5 +13,9 @@
 
         public string PasswordBackdoor { get; set; }
         // Only for educational purposes, not in the final product!
+
+        public List<EventParticipant> events { get; set; } = new();
+
+        public List<Event> HostedEvent { get; set; } = new();
     }
 }
