@@ -9,15 +9,15 @@ builder.AddServiceDefaults();
 
 IConfiguration Configuration = builder.Configuration;
 
-string connectionString = Configuration.GetConnectionString("DefaultConnection")
-?? Environment.GetEnvironmentVariable("DefaultConnection");
+string? connectionString = Configuration.GetConnectionString("DefaultConnection")
+?? Environment.GetEnvironmentVariable("DefaultConnection")
+?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<AppDBContext>(options =>
         options.UseNpgsql(connectionString));
 
 // Add services to the container.
-
-builder.Services.AddControllers();
+    builder.Services.AddControllers();
 
 // Add CORS support for Flutter app
 builder.Services.AddCors(options =>
@@ -50,10 +50,8 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+// Use the new .NET 10 OpenAPI
 builder.Services.AddOpenApi();
-
-// OpenAPI configuration will be handled by middleware
 
 var app = builder.Build();
 

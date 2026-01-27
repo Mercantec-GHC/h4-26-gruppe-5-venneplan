@@ -1,0 +1,190 @@
+﻿using API.DBContext;
+using API.DTOS;
+using API.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace API.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class EventController : ControllerBase
+    {
+
+        private readonly AppDBContext _context;
+
+
+        public EventController(AppDBContext context)
+        {
+            _context = context;
+        }
+
+        [HttpGet(Name = "GetAllEvents")]
+        public async Task<ActionResult<IEnumerable<EventGetDTO>>> Get()
+        {
+            var events = await _context.Events
+                .Select(e => new EventGetDTO
+                {
+                    Id = e.Id,
+                    Title = e.Title,
+                    Adress = e.adress,
+                    Date = e.Date,
+                    Description = e.Description,
+                    HostId = e.HostId,
+                    Host = new GetUserDTO
+                    {
+                        Email = e.Host.Email,
+                        Name = e.Host.Name,
+                        City = e.Host.City,
+                        Age = e.Host.Age
+                    },
+                    ParticipantCount = e.Participants.Count
+                })
+                .ToListAsync();
+
+            return Ok(events);
+        }
+
+        [HttpGet("{id}", Name = "GetEventById")]
+        public async Task<ActionResult<EventGetDTO>> Get(int id)
+        {
+            var evnt = await _context.Events
+                .Where(e => e.Id == id)
+                .Select(e => new EventGetDTO
+                {
+                    Id = e.Id,
+                    Title = e.Title,
+                    Adress = e.adress,
+                    Date = e.Date,
+                    Description = e.Description,
+                    HostId = e.HostId,
+                    Host = new GetUserDTO
+                    {
+                        Email = e.Host.Email,
+                        Name = e.Host.Name,
+                        City = e.Host.City,
+                        Age = e.Host.Age
+                    },
+                    ParticipantCount = e.Participants.Count
+                })
+                .FirstOrDefaultAsync();
+            if(evnt == null)
+            {
+                return NotFound();
+            }
+            return Ok(evnt);
+        }
+
+        [HttpGet("hostedBy/{hostId}", Name = "GetEventsByHost")]
+        public async Task<ActionResult<IEnumerable<EventGetDTO>>> GetByHost(int hostId)
+        {
+            var evnt = await _context.Events
+                .Where(e => e.HostId == hostId)
+                .Select(e => new EventGetDTO
+                {
+                    Id = e.Id,
+                    Title = e.Title,
+                    Adress = e.adress,
+                    Date = e.Date,
+                    Description = e.Description,
+                    HostId = e.HostId,
+                    Host = new GetUserDTO
+                    {
+                        Email = e.Host.Email,
+                        Name = e.Host.Name,
+                        City = e.Host.City,
+                        Age = e.Host.Age
+                    },
+                    ParticipantCount = e.Participants.Count
+                })
+                .ToListAsync();
+            if(evnt == null)
+            {
+                return NotFound();
+            }
+            return Ok(evnt);
+        }
+
+        [HttpPost(Name = "CreateEvent")]
+        public async Task<ActionResult<EventGetDTO>> Post([FromBody] EventCreateDTO createDto)
+        {
+            // Find the Host user by HostId
+            var host = await _context.Users.FindAsync(createDto.HostId);
+            if(host == null)
+            {
+                return BadRequest("Host user not found.");
+            }
+
+            var newEvent = new Event
+            {
+                Title = createDto.Title,
+                adress = createDto.Adress,
+                Date = createDto.Date,
+                Description = createDto.Description,
+                HostId = createDto.HostId,
+                Host = host // Set the required Host property
+            };
+
+            _context.Events.Add(newEvent);
+            await _context.SaveChangesAsync();
+
+            var eventDto = await _context.Events
+                .Where(e => e.Id == newEvent.Id)
+                .Select(e => new EventGetDTO
+                {
+                    Id = e.Id,
+                    Title = e.Title,
+                    Adress = e.adress,
+                    Date = e.Date,
+                    Description = e.Description,
+                    HostId = e.HostId,
+                    Host = new GetUserDTO
+                    {
+                        Email = e.Host.Email,
+                        Name = e.Host.Name,
+                        City = e.Host.City,
+                        Age = e.Host.Age
+                    },
+                    ParticipantCount = e.Participants.Count
+                })
+                .FirstOrDefaultAsync();
+
+            return CreatedAtRoute("GetEventById", new { id = newEvent.Id }, eventDto);
+        }
+
+        [HttpDelete("{id}", Name = "DeleteEvent")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var evnt = await _context.Events.FindAsync(id);
+            if(evnt == null)
+            {
+                return NotFound();
+            }
+            _context.Events.Remove(evnt);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpPut("{id}", Name = "UpdateEvent")]
+        public async Task<IActionResult> Put(int id, [FromBody] Event updatedEvent)
+        {
+            if(id != updatedEvent.Id)
+            {
+                return BadRequest();
+            }
+            var evnt = await _context.Events.FindAsync(id);
+            if(evnt == null)
+            {
+                return NotFound();
+            }
+            evnt.Title = updatedEvent.Title;
+            evnt.adress = updatedEvent.adress;
+            evnt.Date = updatedEvent.Date;
+            evnt.Description = updatedEvent.Description;
+            evnt.HostId = updatedEvent.HostId;
+            _context.Events.Update(evnt);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+    }
+}
