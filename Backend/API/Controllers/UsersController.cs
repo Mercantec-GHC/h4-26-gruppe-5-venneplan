@@ -18,8 +18,8 @@ namespace API.Controllers
             _context = context;
         }
 
-        [HttpGet("all")]
-        public async Task<ActionResult<IEnumerable<GetUserDTO>>> Index()
+        [HttpGet("get")]
+        public async Task<ActionResult<IEnumerable<GetUserDTO>>> GetUsers()
         {
             var users = _context.Users.ToList();
 
@@ -27,7 +27,7 @@ namespace API.Controllers
         }
 
         [HttpGet("get/{id}")]
-        public async Task<ActionResult<GetUserDTO>> Get([FromRoute]int id)
+        public async Task<ActionResult<GetUserDTO>> GetUser([FromRoute]int id)
         {
             var user = _context.Users.FindAsync(id);
 
