@@ -1,7 +1,8 @@
-using API.DBContext;
+﻿using API.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using System;
+using API.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,9 @@ builder.Services.AddDbContext<AppDBContext>(options =>
         options.UseNpgsql(connectionString));
 
 // Add services to the container.
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
 
