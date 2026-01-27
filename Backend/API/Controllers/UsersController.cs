@@ -18,17 +18,28 @@ namespace API.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<GetUserDTO>>> Index()
         {
-            return View();
+            var users = _context.Users.ToList();
+
+            return Ok(users);
+        }
+
+        [HttpGet("get/{id}")]
+        public async Task<ActionResult<GetUserDTO>> Get([FromRoute]int id)
+        {
+            var user = _context.Users.FindAsync(id);
+
+            return Ok(user);
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<RegisterDTO>>Register(RegisterDTO dto)
+        public async Task<ActionResult<RegisterDTO>> Register(RegisterDTO dto)
         {
             if(_context.Users.Any(u => u.Email == dto.Email))
             {
-                return BadRequest("Email already in use.");
+                return BadRequest("Email allerede i brug");
             }
 
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(dto.HashedPassword);
@@ -60,7 +71,21 @@ namespace API.Controllers
             
             return Ok(new {message = "Login", dto.Email});
         }
-    }
 
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound("Kunne ikke finde bruger");
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return Ok("Bruger slettet");
+        }
+    }
 
 }

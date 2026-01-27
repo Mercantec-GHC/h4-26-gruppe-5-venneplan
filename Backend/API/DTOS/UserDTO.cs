@@ -3,8 +3,12 @@ using API.Models;
 
 namespace API.DTOS
 {
-    public class UserDTO
+    public class GetUserDTO
     {
+        public string Email { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string City { get; set; } = string.Empty;
+        public DateOnly Age { get; set; }
     }
 
     public class RegisterDTO
