@@ -18,7 +18,7 @@ namespace API.Controllers
             _context = context;
         }
 
-        [HttpPost("participants", Name = "AddParticipant")]
+        [HttpPost("participants")]
         public async Task<IActionResult> AddParticipant([FromBody] AddParticipantDTO dto)
         {
             var evnt = await _context.Events.FindAsync(dto.EventId);
@@ -56,7 +56,7 @@ namespace API.Controllers
             return Ok(new { message = "Participant added successfully", participantId = participant.Id });
         }
 
-        [HttpGet("participants", Name = "GetParticipants")]
+        [HttpGet("participants")]
         public async Task<ActionResult<IEnumerable<EventParticipant>>> GetParticipants()
         {
             var participants = await _context.EventParticipants
@@ -66,7 +66,7 @@ namespace API.Controllers
             return Ok(participants);
         }
 
-        [HttpGet("participants/{eventId}", Name = "GetParticipantsByEvent")]
+        [HttpGet("participants/{eventId}")]
         public async Task<ActionResult<IEnumerable<EventParticipant>>> GetParticipantsByEvent(int eventId)
         {
             var participants = await _context.EventParticipants
@@ -76,7 +76,7 @@ namespace API.Controllers
             return Ok(participants);
         }
 
-        [HttpGet("participants/user/{userId}", Name = "GetEventsByUser")]
+        [HttpGet("participants/user/{userId}")]
         public async Task<ActionResult<IEnumerable<EventParticipant>>> GetEventsByUser(int userId)
         {
             var events = await _context.EventParticipants
@@ -86,7 +86,7 @@ namespace API.Controllers
             return Ok(events);
         }
 
-        [HttpDelete("participants/{id}", Name = "RemoveParticipant")]
+        [HttpDelete("participants/{id}")]
         public async Task<IActionResult> RemoveParticipant(int id)
         {
             var participant = await _context.EventParticipants.FindAsync(id);
@@ -99,7 +99,7 @@ namespace API.Controllers
             return Ok(new { message = "Participant removed successfully" });
         }
 
-        [HttpPut("participants/{id}", Name = "UpdateParticipantStatus")]
+        [HttpPut("participants/{id}")]
         public async Task<IActionResult> UpdateParticipantStatus(int id, [FromBody] bool isGoing)
         {
             var participant = await _context.EventParticipants.FindAsync(id);

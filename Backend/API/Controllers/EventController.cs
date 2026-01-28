@@ -19,8 +19,8 @@ namespace API.Controllers
             _context = context;
         }
 
-        [HttpGet(Name = "GetAllEvents")]
-        public async Task<ActionResult<IEnumerable<EventGetDTO>>> Get()
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<EventGetDTO>>> GetAllUsers()
         {
             var events = await _context.Events
                 .Select(e => new EventGetDTO
@@ -45,8 +45,8 @@ namespace API.Controllers
             return Ok(events);
         }
 
-        [HttpGet("{id}", Name = "GetEventById")]
-        public async Task<ActionResult<EventGetDTO>> Get(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<EventGetDTO>> GetEventById(int id)
         {
             var evnt = await _context.Events
                 .Where(e => e.Id == id)
@@ -75,7 +75,7 @@ namespace API.Controllers
             return Ok(evnt);
         }
 
-        [HttpGet("hostedBy/{hostId}", Name = "GetEventsByHost")]
+        [HttpGet("hostedBy/{hostId}")]
         public async Task<ActionResult<IEnumerable<EventGetDTO>>> GetByHost(int hostId)
         {
             var evnt = await _context.Events
@@ -106,7 +106,7 @@ namespace API.Controllers
         }
 
         [HttpPost(Name = "CreateEvent")]
-        public async Task<ActionResult<EventGetDTO>> Post([FromBody] EventCreateDTO createDto)
+        public async Task<ActionResult<EventGetDTO>> CreateEvent([FromBody] EventCreateDTO createDto)
         {
             // Find the Host user by HostId
             var host = await _context.Users.FindAsync(createDto.HostId);
@@ -152,8 +152,8 @@ namespace API.Controllers
             return CreatedAtRoute("GetEventById", new { id = newEvent.Id }, eventDto);
         }
 
-        [HttpDelete("{id}", Name = "DeleteEvent")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteEvent(int id)
         {
             var evnt = await _context.Events.FindAsync(id);
             if(evnt == null)
@@ -165,8 +165,8 @@ namespace API.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}", Name = "UpdateEvent")]
-        public async Task<IActionResult> Put(int id, [FromBody] Event updatedEvent)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateEvent(int id, [FromBody] Event updatedEvent)
         {
             if(id != updatedEvent.Id)
             {
