@@ -27,7 +27,7 @@ namespace API.Controllers
         }
 
         [HttpGet("get/{id}")]
-        public async Task<ActionResult<FriendDTO>> Details([FromRoute] int id)
+        public async Task<ActionResult<FriendDTO>> GetFriend([FromRoute] int id)
         {
             var friend = await _context.Friends.FindAsync(id);
             if (friend == null)
@@ -102,7 +102,7 @@ namespace API.Controllers
             return Ok(friend);
         }
 
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var friend = await _context.Friends.FindAsync(id);
