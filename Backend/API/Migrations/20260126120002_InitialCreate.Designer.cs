@@ -52,7 +52,7 @@ namespace API.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("adress")
+                    b.Property<string>("Adress")
                         .IsRequired()
                         .HasColumnType("text");
 
