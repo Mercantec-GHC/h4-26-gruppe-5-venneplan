@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/chat/view/chat_overview_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/config/app_config.dart';
 import 'core/di/injection.dart';
@@ -20,7 +21,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // 1. Initialisér App Configuration
-  // TODO: Skift til Environment.production når du deployer til produktion!
+  // Remember: Skift til Environment.production når du deployer til produktion!
   await AppConfig.initialize(Environment.development);
   // await AppConfig.initialize(Environment.production);
   
@@ -60,13 +61,13 @@ class MyApp extends StatelessWidget {
           create: (context) => getIt<WeatherBloc>(),
         ),
         
-        // TODO: Tilføj flere BLoCs her efterhånden:
+        // Remember: Tilføj flere BLoCs her efterhånden:
         // BlocProvider(
         //   create: (context) => getIt<LoginBloc>(),
         // ),
       ],
       child: MaterialApp(
-        title: 'H4 Vejr App',
+        title: 'Venneplan',
         theme: appTheme,
         debugShowCheckedModeBanner: false,
         home: const MainNavigation(),
@@ -88,6 +89,7 @@ class _MainNavigationState extends State<MainNavigation> {
   static final List<Widget> _pages = <Widget>[
     WeatherPage(),
     InfographicPage(),
+    ChatOverviewPage(),
   ];
 
   @override
@@ -109,6 +111,10 @@ class _MainNavigationState extends State<MainNavigation> {
           BottomNavigationBarItem(
             icon: Icon(Icons.info_outline),
             label: 'BLoC',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat),
+            label: 'Chat',
           ),
         ],
       ),
