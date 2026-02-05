@@ -13,7 +13,7 @@ namespace API.Migrations
 {
     [DbContext(typeof(AppDBContext))]
     [Migration("20260201135720_NewestCreateJWT")]
-    partial class NewestCreateJWT
+    partial class NewestCreateJWT : Migration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -319,6 +319,11 @@ namespace API.Migrations
                     b.Navigation("events");
                 });
 #pragma warning restore 612, 618
+        }
+
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            // Up migration logic (if any) goes here
         }
     }
 }

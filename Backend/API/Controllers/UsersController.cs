@@ -77,7 +77,6 @@ namespace API.Controllers
             return Ok(new {message = "Bruger oprettet!", dto.Email});
         }
 
-        [Authorize]
         [HttpPost("login")]
         public async Task<ActionResult<LoginDTO>> Login(LoginDTO dto)
         {
