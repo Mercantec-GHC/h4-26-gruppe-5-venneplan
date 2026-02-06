@@ -18,7 +18,7 @@ import 'weather_state.dart';
 /// Event Flow:
 /// 1. UI trigger event (LoadWeatherData)
 /// 2. BLoC kalder repository metode
-/// 3. Repository returnerer ApiResult<T>
+/// 3. Repository returnerer ApiResult<\T> 
 /// 4. BLoC mapper result til state
 /// 5. UI reagerer på ny state
 /// 
@@ -50,7 +50,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   /// Handler for LoadWeatherData event
   /// 
   /// Henter vejrdata fra repository og emitter states baseret på result.
-  /// Bruger ApiResult<T> for type-safe error handling - ingen try/catch nødvendigt!
+  /// Bruger ApiResult<\T> for type-safe error handling - ingen try/catch nødvendigt!
   Future<void> _onLoadWeatherData(
     LoadWeatherData event,
     Emitter<WeatherState> emit,

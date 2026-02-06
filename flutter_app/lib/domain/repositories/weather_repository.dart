@@ -22,7 +22,7 @@ import '../entities/weather_entity.dart';
 abstract class WeatherRepository {
   /// Hent vejrudsigt
   /// 
-  /// Returns ApiResult<List<WeatherEntity>> for type-safe error handling.
+  /// Returns ApiResult<\List<\WeatherEntity>> for type-safe error handling.
   /// 
   /// Success case: Liste af vejr data
   /// Failure case: ApiException med fejldetaljer
