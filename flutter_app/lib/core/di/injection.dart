@@ -55,7 +55,7 @@ Future<void> setupDependencyInjection() async {
     ),
   );
 
-  // TODO: Tilføj local data source her når I implementerer caching
+  // Remember: Tilføj local data source her når I implementerer caching
   // getIt.registerLazySingleton<WeatherLocalDataSource>(
   //   () => WeatherLocalDataSourceImpl(),
   // );
@@ -72,7 +72,7 @@ Future<void> setupDependencyInjection() async {
     ),
   );
 
-  // TODO: Tilføj flere repositories her efterhånden:
+  // Remember: Tilføj flere repositories her efterhånden:
   // getIt.registerLazySingleton<UserRepository>(
   //   () => UserRepositoryImpl(
   //     remoteDataSource: getIt<UserRemoteDataSource>(),
@@ -90,7 +90,7 @@ Future<void> setupDependencyInjection() async {
     ),
   );
 
-  // TODO: Tilføj flere BLoCs her efterhånden:
+  // Remember: Tilføj flere BLoCs her efterhånden:
   // getIt.registerFactory<LoginBloc>(
   //   () => LoginBloc(
   //     authRepository: getIt<AuthRepository>(),

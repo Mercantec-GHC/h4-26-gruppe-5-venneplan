@@ -13,7 +13,7 @@ import 'api_result.dart';
 /// - Error handling og mapping til ApiException
 /// - Timeout configuration
 /// - Retry logic for failed requests
-/// - Type-safe responses med ApiResult<T>
+/// - Type-safe responses med ApiResult<\T>
 /// 
 /// Usage:
 /// ```dart

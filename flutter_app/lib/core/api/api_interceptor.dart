@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import '../config/app_config.dart';
 
@@ -21,28 +23,28 @@ class LoggingInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     if (enableLogging) {
-      print('╔═══════════════════════════════════════════════════════════════');
-      print('║ 🚀 REQUEST');
-      print('╠═══════════════════════════════════════════════════════════════');
-      print('║ Method: ${options.method}');
-      print('║ URL: ${options.uri}');
+      log('╔═══════════════════════════════════════════════════════════════');
+      log('║ 🚀 REQUEST');
+      log('╠═══════════════════════════════════╤╤╤╤╤╤╤╤╤╤╤╤╤╤╤╤╤╤╤═');
+      log('║ Method: ${options.method}');
+      log('║ URL: ${options.uri}');
       
       if (options.headers.isNotEmpty) {
-        print('║ Headers:');
+        log('║ Headers:');
         options.headers.forEach((key, value) {
-          print('║   $key: $value');
+          log('║   $key: $value');
         });
       }
       
       if (options.data != null) {
-        print('║ Body: ${options.data}');
+        log('║ Body: ${options.data}');
       }
       
       if (options.queryParameters.isNotEmpty) {
-        print('║ Query Parameters: ${options.queryParameters}');
+        log('║ Query Parameters: ${options.queryParameters}');
       }
       
-      print('╚═══════════════════════════════════════════════════════════════\n');
+      log('╚═══════════════════════════════════════════════════════════════\n');
     }
     
     super.onRequest(options, handler);
@@ -51,13 +53,13 @@ class LoggingInterceptor extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     if (enableLogging) {
-      print('╔═══════════════════════════════════════════════════════════════');
-      print('║ ✅ RESPONSE');
-      print('╠═══════════════════════════════════════════════════════════════');
-      print('║ Status: ${response.statusCode}');
-      print('║ URL: ${response.requestOptions.uri}');
-      print('║ Data: ${response.data}');
-      print('╚═══════════════════════════════════════════════════════════════\n');
+      log('╔═══════════════════════════════════════════════════════════════');
+      log('║ ✅ RESPONSE');
+      log('╠═══════════════════════════════════════════════════════════════');
+      log('║ Status: ${response.statusCode}');
+      log('║ URL: ${response.requestOptions.uri}');
+      log('║ Data: ${response.data}');
+      log('╚═══════════════════════════════════════════════════════════════\n');
     }
     
     super.onResponse(response, handler);
@@ -66,19 +68,19 @@ class LoggingInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     if (enableLogging) {
-      print('╔═══════════════════════════════════════════════════════════════');
-      print('║ ❌ ERROR');
-      print('╠═══════════════════════════════════════════════════════════════');
-      print('║ Type: ${err.type}');
-      print('║ URL: ${err.requestOptions.uri}');
-      print('║ Status: ${err.response?.statusCode}');
-      print('║ Message: ${err.message}');
+      log('╔═══════════════════════════════════════════════════════════════');
+      log('║ ❌ ERROR');
+      log('╠═══════════════════════════════════════════════════════════════');
+      log('║ Type: ${err.type}');
+      log('║ URL: ${err.requestOptions.uri}');
+      log('║ Status: ${err.response?.statusCode}');
+      log('║ Message: ${err.message}');
       
       if (err.response?.data != null) {
-        print('║ Response Data: ${err.response?.data}');
+        log('║ Response Data: ${err.response?.data}');
       }
       
-      print('╚═══════════════════════════════════════════════════════════════\n');
+      log('╚═══════════════════════════════════════════════════════════════\n');
     }
     
     super.onError(err, handler);
@@ -118,12 +120,12 @@ class AuthInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    // TODO: Implementer token refresh logic her hvis nødvendigt
+    // Remember: Implementer token refresh logic her hvis nødvendigt
     // Hvis 401 Unauthorized, prøv at refresh token og retry request
     
     if (err.response?.statusCode == 401) {
       // Log user out eller refresh token
-      print('⚠️ Unauthorized request - token might be expired');
+      log('⚠️ Unauthorized request - token might be expired');
     }
     
     super.onError(err, handler);
@@ -150,7 +152,7 @@ class RetryInterceptor extends Interceptor {
 
     // Check om vi skal retry
     if (retries < maxRetries && _shouldRetry(err)) {
-      print('🔄 Retrying request... (attempt ${retries + 1}/$maxRetries)');
+      log('🔄 Retrying request... (attempt ${retries + 1}/$maxRetries)');
       
       // Vent før retry
       await Future.delayed(retryDelay);
