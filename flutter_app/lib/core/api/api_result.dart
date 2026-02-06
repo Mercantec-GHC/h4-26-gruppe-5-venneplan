@@ -1,6 +1,6 @@
 /// Type-safe Result type til håndtering af API responses
 /// 
-/// Inspiration fra Rust's Result<T, E> og Kotlin's Result
+/// Inspiration fra Rust's Result<\T, E> og Kotlin's Result
 /// Undgår at bruge exceptions til flow control og giver bedre type safety.
 /// 
 /// Usage:
