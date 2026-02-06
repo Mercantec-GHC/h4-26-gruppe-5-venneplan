@@ -1,5 +1,5 @@
 import '../../domain/repositories/group_repository.dart';
-import '../datasources/group_remote_datasource_v2.dart';
+import '../datasources/group_remote_datasource.dart';
 
 class GroupRepositoryImpl implements GroupRepository {
   final GroupRemoteDataSource remoteDataSource;
